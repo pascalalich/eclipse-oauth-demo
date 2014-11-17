@@ -3,6 +3,8 @@ package de.alichs.eclipse.oauth;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,10 +38,9 @@ public class OAuthCommandLineSample {
 	// private static final String REDIRECT_URI = "http://localhost";
 	private static final String USER_NAME = "pascal";
 
-	private static final File CLIENT_SECRETS_FILE = new File(
-			"D:/NAK/Google API/client_secret.json");
-	private static final File DATA_STORE_DIRECTORY = new File(
-			"D:/NAK/Google API/store");
+	private static final URL CLIENT_SECRETS = Activator.getDefault().getBundle().getEntry("client_secret.json");
+	private static final File DATA_STORE_DIRECTORY = new File(Activator.getDefault().getStateLocation().toFile(),
+			"store");
 
 	public static void doit() {
 		try {
@@ -52,7 +53,7 @@ public class OAuthCommandLineSample {
 
 	private static Credential authorize() throws IOException {
 		GoogleClientSecrets secrets = GoogleClientSecrets.load(JSON_FACTORY,
-				new FileReader(CLIENT_SECRETS_FILE));
+				new InputStreamReader(CLIENT_SECRETS.openStream()));
 		GoogleAuthorizationCodeFlow authorizationFlow = new GoogleAuthorizationCodeFlow.Builder(
 				HTTP_TRANSPORT, JSON_FACTORY, secrets, TASKS_SCOPE)
 				.setDataStoreFactory(
