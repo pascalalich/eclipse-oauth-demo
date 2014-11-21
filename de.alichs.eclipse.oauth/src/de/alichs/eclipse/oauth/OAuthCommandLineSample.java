@@ -1,7 +1,6 @@
 package de.alichs.eclipse.oauth;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -9,6 +8,8 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
+
+import org.eclipse.jface.window.Window;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
@@ -38,19 +39,29 @@ public class OAuthCommandLineSample {
 	// private static final String REDIRECT_URI = "http://localhost";
 	private static final String USER_NAME = "pascal";
 
-	private static final URL CLIENT_SECRETS = Activator.getDefault().getBundle().getEntry("client_secret.json");
-	private static final File DATA_STORE_DIRECTORY = new File(Activator.getDefault().getStateLocation().toFile(),
-			"store");
+	private static final URL CLIENT_SECRETS = Activator.getDefault()
+			.getBundle().getEntry("client_secret.json");
+	private static final File DATA_STORE_DIRECTORY = new File(Activator
+			.getDefault().getStateLocation().toFile(), "store");
 
 	public static void doit() {
 		try {
 			Credential credential = authorize();
-			listAll(credential);
+			if (credential != null) {
+				listAll(credential);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			ErrorDialogHelper.openErrorDialog("Task error",
+					"Failed to retrieve tasks", e);
 		}
 	}
 
+	/**
+	 * 
+	 * @return the credentials containing the access token or <code>null</code>
+	 *         if it the user canceled the operation
+	 * @throws IOException
+	 */
 	private static Credential authorize() throws IOException {
 		GoogleClientSecrets secrets = GoogleClientSecrets.load(JSON_FACTORY,
 				new InputStreamReader(CLIENT_SECRETS.openStream()));
@@ -68,23 +79,29 @@ public class OAuthCommandLineSample {
 		GoogleAuthorizationCodeRequestUrl url = authorizationFlow
 				.newAuthorizationUrl();
 		url.setRedirectUri(REDIRECT_URI);
-		System.out.println("Go to the following address:");
-		System.out.println(url);
 
-		System.out.println("Please enter the code:");
-		String authorizationCode;
-		try (Scanner in = new Scanner(System.in)) {
-			authorizationCode = in.nextLine();
+		// System.out.println("Go to the following address:");
+		// System.out.println(url);
+		BrowserDialog browserDialog = new BrowserDialog(800, 600,
+				"Authorization/Authentication", url.toString());
+		int result = browserDialog.open();
+		if (result == Window.OK) {
+			System.out.println("Please enter the code:");
+			String authorizationCode;
+			try (Scanner in = new Scanner(System.in)) {
+				authorizationCode = in.nextLine();
+			}
+			GoogleAuthorizationCodeTokenRequest tokenRequest = authorizationFlow
+					.newTokenRequest(authorizationCode);
+			tokenRequest.setRedirectUri(REDIRECT_URI);
+			TokenResponse tokenResponse = tokenRequest.execute();
+
+			credential = authorizationFlow.createAndStoreCredential(
+					tokenResponse, USER_NAME);
+			System.out.println("Access token retrieved");
+			System.out
+					.println("-------------------------------------------------");
 		}
-		GoogleAuthorizationCodeTokenRequest tokenRequest = authorizationFlow
-				.newTokenRequest(authorizationCode);
-		tokenRequest.setRedirectUri(REDIRECT_URI);
-		TokenResponse tokenResponse = tokenRequest.execute();
-
-		credential = authorizationFlow.createAndStoreCredential(tokenResponse,
-				USER_NAME);
-		System.out.println("Access token retrieved");
-		System.out.println("-------------------------------------------------");
 		return credential;
 	}
 
