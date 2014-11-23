@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -67,12 +68,22 @@ public class BrowserDialog extends Dialog implements IBrowserViewerContainer {
 		viewer = new BrowserViewer(composite, DEFAULT_BROWSER_STYLE);
 		viewer.setContainer(this);
 		viewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		initBrowser(viewer.getBrowser());
 		viewer.setURL(url);
 		Control statusLine = statusLineManager.createControl(parent);
 		statusLine.setEnabled(false);
 		statusLine.setVisible(false);
 		statusLine.setSize(0, 0);
 		return composite;
+	}
+
+	/**
+	 * Can be implemented by sub classes to initializes the browser before the
+	 * first URL is opened.
+	 * 
+	 * @param browser
+	 */
+	protected void initBrowser(Browser browser) {
 	}
 
 	@Override

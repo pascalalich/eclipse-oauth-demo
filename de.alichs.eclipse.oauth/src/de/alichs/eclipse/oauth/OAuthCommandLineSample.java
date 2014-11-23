@@ -35,8 +35,7 @@ public class OAuthCommandLineSample {
 
 	private static final Collection<String> TASKS_SCOPE = Arrays
 			.asList("https://www.googleapis.com/auth/tasks");
-	private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
-	// private static final String REDIRECT_URI = "http://localhost";
+	private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob:auto";
 	private static final String USER_NAME = "pascal";
 
 	private static final URL CLIENT_SECRETS = Activator.getDefault()
@@ -80,19 +79,17 @@ public class OAuthCommandLineSample {
 				.newAuthorizationUrl();
 		url.setRedirectUri(REDIRECT_URI);
 
-		// System.out.println("Go to the following address:");
-		// System.out.println(url);
-		BrowserDialog browserDialog = new BrowserDialog(800, 600,
-				"Authorization/Authentication", url.toString());
+		OAuthBrowserDialog browserDialog = new OAuthBrowserDialog(
+				url.toString());
 		int result = browserDialog.open();
 		if (result == Window.OK) {
-			System.out.println("Please enter the code:");
-			String authorizationCode;
-			try (Scanner in = new Scanner(System.in)) {
-				authorizationCode = in.nextLine();
-			}
+//			System.out.println("Please enter the code:");
+//			String authorizationCode;
+//			try (Scanner in = new Scanner(System.in)) {
+//				authorizationCode = in.nextLine();
+//			}
 			GoogleAuthorizationCodeTokenRequest tokenRequest = authorizationFlow
-					.newTokenRequest(authorizationCode);
+					.newTokenRequest(browserDialog.getToken());
 			tokenRequest.setRedirectUri(REDIRECT_URI);
 			TokenResponse tokenResponse = tokenRequest.execute();
 
