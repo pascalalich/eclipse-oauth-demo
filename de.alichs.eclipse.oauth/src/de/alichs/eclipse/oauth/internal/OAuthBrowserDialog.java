@@ -14,7 +14,7 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 	private volatile String token;
 
 	public OAuthBrowserDialog(String url) {
-		super(800, 600, "Authorization / Authentication", url);
+		super(800, 600, "Authorization / Authentication", url, false);
 	}
 
 	@Override
@@ -26,14 +26,13 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 
 	@Override
 	public void changing(LocationEvent event) {
-		System.out.println("Changing: "+event);
+		System.out.println("Changing: " + event);
 	}
 
 	@Override
 	public void changed(LocationEvent event) {
-		System.out.println("Changed: "+event);
+		System.out.println("Changed: " + event);
 	}
-
 
 	@Override
 	public void changed(ProgressEvent event) {
@@ -48,14 +47,23 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 
 	@Override
 	public void changed(TitleEvent event) {
-		System.out.println("Changed: "+event);
-		closeIfTitleContainsToken(event);
+		System.out.println("Changed: " + event);
+		closeIfTitleContainsToken(event.title);
+		closeIfTitleContainsFailure(event.title);
 	}
-	
-	private void closeIfTitleContainsToken(TitleEvent event) {
+
+	private void closeIfTitleContainsToken(String title) {
 		String prefix = "Success code=";
-		if (event.title.startsWith(prefix)) {
-			this.token = event.title.substring(prefix.length());
+		if (title.startsWith(prefix)) {
+			this.token = title.substring(prefix.length());
+			setReturnCode(OK);
+			close();
+		}
+	}
+
+	private void closeIfTitleContainsFailure(String title) {
+		if (title.equals("Denied error=access_denied")) {
+			setReturnCode(CANCEL);
 			close();
 		}
 	}

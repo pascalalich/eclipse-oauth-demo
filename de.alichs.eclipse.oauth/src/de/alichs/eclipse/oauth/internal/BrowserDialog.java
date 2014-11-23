@@ -37,14 +37,17 @@ public class BrowserDialog extends Dialog implements IBrowserViewerContainer {
 	private StatusLineManager statusLineManager = new StatusLineManager();
 	private IActionBars actionBars = new StatusLineActionBars();
 
+	private boolean showButtons;
+
 	public BrowserDialog(int popupWidth, int popupHeight, String title,
-			String url) {
+			String url, boolean showButtons) {
 		super(PlatformUI.getWorkbench().getModalDialogShellProvider());
 		this.popupWidth = popupWidth;
 		this.popupHeight = popupHeight;
 		this.title = title;
 		this.url = url;
 		setShellStyle(getShellStyle() | SWT.APPLICATION_MODAL);
+		this.showButtons = showButtons;
 	}
 
 	@Override
@@ -138,6 +141,12 @@ public class BrowserDialog extends Dialog implements IBrowserViewerContainer {
 		@Override
 		public void updateActionBars() {
 		}
+	}
 
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		if (showButtons) {
+			super.createButtonsForButtonBar(parent);
+		}
 	}
 }
