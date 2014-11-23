@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Scanner;
 
 import org.eclipse.jface.window.Window;
 
@@ -22,48 +20,43 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.model.TaskList;
-import com.google.api.services.tasks.model.TaskLists;
 
-public class OAuthCommandLineSample {
+import de.alichs.eclipse.oauth.internal.Activator;
+import de.alichs.eclipse.oauth.internal.OAuthBrowserDialog;
+
+public class TokenHandler {
+
+	private static final TokenHandler INSTANCE = new TokenHandler();
 
 	private static HttpTransport HTTP_TRANSPORT = new NetHttpTransport.Builder()
 			.build();
 	private static JsonFactory JSON_FACTORY = JacksonFactory
 			.getDefaultInstance();
 
+	private static final File DATA_STORE_DIRECTORY = new File(Activator
+			.getDefault().getStateLocation().toFile(), "store");
+
 	private static final Collection<String> TASKS_SCOPE = Arrays
 			.asList("https://www.googleapis.com/auth/tasks");
 	private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob:auto";
 	private static final String USER_NAME = "pascal";
 
-	private static final URL CLIENT_SECRETS = Activator.getDefault()
-			.getBundle().getEntry("client_secret.json");
-	private static final File DATA_STORE_DIRECTORY = new File(Activator
-			.getDefault().getStateLocation().toFile(), "store");
+	private TokenHandler() {
+	}
 
-	public static void doit() {
-		try {
-			Credential credential = authorize();
-			if (credential != null) {
-				listAll(credential);
-			}
-		} catch (Exception e) {
-			ErrorDialogHelper.openErrorDialog("Task error",
-					"Failed to retrieve tasks", e);
-		}
+	public static TokenHandler getInstance() {
+		return INSTANCE;
 	}
 
 	/**
-	 * 
+	 * @param clientSecrets
 	 * @return the credentials containing the access token or <code>null</code>
 	 *         if it the user canceled the operation
 	 * @throws IOException
 	 */
-	private static Credential authorize() throws IOException {
+	public Credential getCredentials(URL clientSecrets) throws IOException {
 		GoogleClientSecrets secrets = GoogleClientSecrets.load(JSON_FACTORY,
-				new InputStreamReader(CLIENT_SECRETS.openStream()));
+				new InputStreamReader(clientSecrets.openStream()));
 		GoogleAuthorizationCodeFlow authorizationFlow = new GoogleAuthorizationCodeFlow.Builder(
 				HTTP_TRANSPORT, JSON_FACTORY, secrets, TASKS_SCOPE)
 				.setDataStoreFactory(
@@ -83,11 +76,6 @@ public class OAuthCommandLineSample {
 				url.toString());
 		int result = browserDialog.open();
 		if (result == Window.OK) {
-//			System.out.println("Please enter the code:");
-//			String authorizationCode;
-//			try (Scanner in = new Scanner(System.in)) {
-//				authorizationCode = in.nextLine();
-//			}
 			GoogleAuthorizationCodeTokenRequest tokenRequest = authorizationFlow
 					.newTokenRequest(browserDialog.getToken());
 			tokenRequest.setRedirectUri(REDIRECT_URI);
@@ -95,23 +83,8 @@ public class OAuthCommandLineSample {
 
 			credential = authorizationFlow.createAndStoreCredential(
 					tokenResponse, USER_NAME);
-			System.out.println("Access token retrieved");
-			System.out
-					.println("-------------------------------------------------");
 		}
 		return credential;
-	}
-
-	private static void listAll(Credential credential)
-			throws GeneralSecurityException, IOException {
-		Tasks tasksService = new Tasks.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-				credential).setApplicationName("NAK Task Aggregator").build();
-		TaskLists lists = tasksService.tasklists().list().execute();
-
-		System.out.println("All task lists:");
-		for (TaskList list : lists.getItems()) {
-			System.out.println("- " + list.getTitle());
-		}
 	}
 
 }

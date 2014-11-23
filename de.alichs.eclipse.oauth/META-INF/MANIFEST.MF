@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse OAuth Integration
 Bundle-SymbolicName: de.alichs.eclipse.oauth;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.alichs.eclipse.oauth.Activator
+Bundle-Activator: de.alichs.eclipse.oauth.internal.Activator
 Bundle-Vendor: Pascal Alich
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- com.google.api.client;bundle-version="1.18.0",
- org.eclipse.ui.browser;bundle-version="3.4.200"
+ org.eclipse.ui.browser;bundle-version="3.4.200",
+ com.google.api.client;bundle-version="1.18.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lib/google-api-services-tasks-v1-rev36-1.18.0-rc.jar,
- .
+Bundle-ClassPath: .
+Export-Package: de.alichs.eclipse.oauth
