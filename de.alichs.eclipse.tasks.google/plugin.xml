@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:file">
+         <command
+               commandId="de.alichs.eclipse.tasks.google"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="de.alichs.eclipse.tasks.google"
+            name="Show Google Tasks">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.alichs.eclipse.tasks.google.ShowGoogleTasksHandler"
+            commandId="de.alichs.eclipse.tasks.google">
+      </handler>
+   </extension>
+
+</plugin>

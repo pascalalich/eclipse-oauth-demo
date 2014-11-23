@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Google Tasks
+Bundle-SymbolicName: de.alichs.eclipse.tasks.google;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.alichs.eclipse.tasks.google.Activator
+Bundle-Vendor: Pascal Alich
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/google-api-services-tasks-v1-rev36-1.18.0-rc.jar,
+ .
+Import-Package: com.google.api.client.auth.oauth2,
+ com.google.api.client.googleapis,
+ com.google.api.client.googleapis.services,
+ com.google.api.client.googleapis.services.json,
+ com.google.api.client.http,
+ com.google.api.client.http.javanet,
+ com.google.api.client.json,
+ com.google.api.client.json.jackson2,
+ com.google.api.client.util,
+ de.alichs.eclipse.oauth
