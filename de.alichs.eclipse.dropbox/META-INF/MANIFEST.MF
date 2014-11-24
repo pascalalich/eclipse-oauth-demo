@@ -1,11 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Trello
-Bundle-SymbolicName: de.alichs.eclipse.tasks.trello
+Bundle-Name: Eclipse Dropbox
+Bundle-SymbolicName: de.alichs.eclipse.dropbox;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.alichs.eclipse.tasks.trello.Activator
+Bundle-Activator: de.alichs.eclipse.dropbox.Activator
 Bundle-Vendor: Pascal Alich
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Import-Package: com.google.api.client.auth.oauth2,
+ de.alichs.eclipse.oauth

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:file">
+         <command
+               commandId="de.alichs.eclipse.dropbox"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="de.alichs.eclipse.dropbox"
+            name="Show Dropbox Files">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.alichs.eclipse.dropbox.ShowDropboxFilesHandler"
+            commandId="de.alichs.eclipse.dropbox">
+      </handler>
+   </extension>
+</plugin>

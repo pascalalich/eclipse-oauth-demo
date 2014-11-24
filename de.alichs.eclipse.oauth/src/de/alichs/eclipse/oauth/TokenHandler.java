@@ -9,12 +9,20 @@ import java.util.Collection;
 
 import org.eclipse.jface.window.Window;
 
+import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
+import com.google.api.client.auth.oauth2.BearerToken;
+import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpExecuteInterceptor;
+import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -87,4 +95,50 @@ public class TokenHandler {
 		return credential;
 	}
 
+	/**
+	 * TODO abstract even further
+	 * 
+	 * @return the credentials containing the access token or <code>null</code>
+	 *         if it the user canceled the operation
+	 * @throws IOException
+	 */
+	public Credential getCredentialsForDropbox() throws IOException {
+		GenericUrl tokenServerUrl = new GenericUrl("https://api.dropbox.com/1/oauth2/token");
+		String clientId = "zq1o9ikyz89u6ug";
+		String clientSecret = "lyuh8ao9uxzuzva";
+		HttpExecuteInterceptor clientAuthentication = new ClientParametersAuthentication(clientId, clientSecret);
+		String authorizationServerEncodedUrl = "https://www.dropbox.com/1/oauth2/authorize";
+		AuthorizationCodeFlow authorizationFlow = new AuthorizationCodeFlow.Builder(
+				BearerToken.authorizationHeaderAccessMethod(), HTTP_TRANSPORT,
+				JSON_FACTORY, tokenServerUrl, clientAuthentication, clientId,
+				authorizationServerEncodedUrl).setDataStoreFactory(
+				new FileDataStoreFactory(DATA_STORE_DIRECTORY)).build();
+
+		String user = "dropbox";
+		Credential credential = authorizationFlow.loadCredential(user);
+		if (credential != null) {
+			System.out.println("Credentials found.");
+			return credential;
+		}
+
+		AuthorizationCodeRequestUrl url = authorizationFlow
+				.newAuthorizationUrl();
+		String redirectUri = "http://localhost:7777/dropbox-redirect";
+		url.setRedirectUri(redirectUri);
+
+		OAuthBrowserDialog browserDialog = new OAuthBrowserDialog(
+				url.toString());
+		int result = browserDialog.open();
+		if (result == Window.OK) {
+			AuthorizationCodeTokenRequest tokenRequest = authorizationFlow
+					.newTokenRequest(browserDialog.getToken());
+			tokenRequest.setRedirectUri(redirectUri);
+			tokenRequest.setScopes(null);
+			TokenResponse tokenResponse = tokenRequest.execute();
+
+			credential = authorizationFlow.createAndStoreCredential(
+					tokenResponse, user);
+		}
+		return credential;
+	}
 }

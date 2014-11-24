@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/google-api-client-1.18.0-rc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/google-api-client-1.18.0-rc.jar" sourcepath="D:/Dropbox/Programming/tools/google-api-java-client-1.18.0-rc/libs-sources/google-api-client-1.18.0-rc-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-android-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-appengine-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-gson-1.18.0-rc.jar"/>
@@ -19,7 +19,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-jdo-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-protobuf-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-xml-1.18.0-rc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/google-oauth-client-1.18.0-rc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/google-oauth-client-1.18.0-rc.jar" sourcepath="D:/Dropbox/Programming/tools/google-api-java-client-1.18.0-rc/libs-sources/google-oauth-client-1.18.0-rc-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-oauth-client-appengine-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-oauth-client-java6-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-oauth-client-jetty-1.18.0-rc.jar"/>

@@ -27,6 +27,17 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 	@Override
 	public void changing(LocationEvent event) {
 		System.out.println("Changing: " + event);
+		closeIfURLContainsToken(event.location);
+	}
+
+	// for Dropbox
+	private void closeIfURLContainsToken(String location) {
+		String prefix = "http://localhost:7777/dropbox-redirect?code=";
+		if (location.startsWith(prefix)) {
+			this.token = location.substring(prefix.length());
+			setReturnCode(OK);
+			close();
+		}
 	}
 
 	@Override
@@ -52,6 +63,7 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 		closeIfTitleContainsFailure(event.title);
 	}
 
+	// for Google
 	private void closeIfTitleContainsToken(String title) {
 		String prefix = "Success code=";
 		if (title.startsWith(prefix)) {
@@ -61,6 +73,7 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 		}
 	}
 
+	// for Google
 	private void closeIfTitleContainsFailure(String title) {
 		if (title.equals("Denied error=access_denied")) {
 			setReturnCode(CANCEL);
