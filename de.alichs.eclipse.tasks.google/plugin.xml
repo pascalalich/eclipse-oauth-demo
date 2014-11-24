@@ -11,12 +11,25 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:de.alichs.eclipse.tasks.google">
+         <command
+               commandId="de.alichs.eclipse.tasks.google.refresh"
+               icon="icons/refresh.gif"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             id="de.alichs.eclipse.tasks.google"
             name="Show Google Tasks">
+      </command>
+      <command
+            id="de.alichs.eclipse.tasks.google.refresh"
+            name="Refresh">
       </command>
    </extension>
    <extension
@@ -25,12 +38,16 @@
             class="de.alichs.eclipse.tasks.google.ShowGoogleTasksHandler"
             commandId="de.alichs.eclipse.tasks.google">
       </handler>
+      <handler
+            class="de.alichs.eclipse.tasks.google.RefreshHandler"
+            commandId="de.alichs.eclipse.tasks.google.refresh">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             class="de.alichs.eclipse.tasks.google.GoogleTaskView"
-            icon="google16.png"
+            icon="icons/google16.png"
             id="de.alichs.eclipse.tasks.google"
             name="Google Tasks"
             restorable="true">

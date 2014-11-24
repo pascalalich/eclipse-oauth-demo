@@ -52,7 +52,7 @@ public class GoogleTaskView extends ViewPart {
 		refreshTree();
 	}
 
-	private void refreshTree() {
+	public void refreshTree() {
 		// Job job = new Job("Loading Google tasks...") {
 		// @Override
 		// protected IStatus run(IProgressMonitor monitor) {
