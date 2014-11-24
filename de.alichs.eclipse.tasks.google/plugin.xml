@@ -26,5 +26,15 @@
             commandId="de.alichs.eclipse.tasks.google">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.alichs.eclipse.tasks.google.GoogleTaskView"
+            icon="google16.png"
+            id="de.alichs.eclipse.tasks.google"
+            name="Google Tasks"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
