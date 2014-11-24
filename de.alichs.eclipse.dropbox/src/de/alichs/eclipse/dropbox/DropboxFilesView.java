@@ -47,11 +47,15 @@ public class DropboxFilesView extends ViewPart {
 		TokenHandler tokenHandler = TokenHandler.getInstance();
 		try {
 			Credential credential = tokenHandler.getCredentialsForDropbox();
-			DropboxFilesRepository repository = new DropboxFilesRepository(
-					credential);
-			DropboxDirectory rootDir = (DropboxDirectory) repository
-					.getFile("/");
-			updateTree(rootDir);
+			if (credential != null) {
+				DropboxFilesRepository repository = new DropboxFilesRepository(
+						credential);
+				DropboxDirectory rootDir = (DropboxDirectory) repository
+						.getFile("/");
+				updateTree(rootDir);
+			} else {
+				// TODO clear tree
+			}
 		} catch (IOException e) {
 			ErrorDialogHelper.openErrorDialog("Dropbox Files",
 					"Could not access Dropbox", e);

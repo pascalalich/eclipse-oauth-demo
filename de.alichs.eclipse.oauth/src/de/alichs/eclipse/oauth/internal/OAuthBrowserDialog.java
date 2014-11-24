@@ -15,6 +15,8 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 
 	public OAuthBrowserDialog(String url) {
 		super(800, 600, "Authorization / Authentication", url, false);
+		// set default return code to CANCEL
+		setReturnCode(CANCEL);
 	}
 
 	@Override
@@ -28,16 +30,7 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 	public void changing(LocationEvent event) {
 		System.out.println("Changing: " + event);
 		closeIfURLContainsToken(event.location);
-	}
-
-	// for Dropbox
-	private void closeIfURLContainsToken(String location) {
-		String prefix = "http://localhost:7777/dropbox-redirect?code=";
-		if (location.startsWith(prefix)) {
-			this.token = location.substring(prefix.length());
-			setReturnCode(OK);
-			close();
-		}
+		closeIfURLContainsFailure(event.location);
 	}
 
 	@Override
@@ -76,6 +69,26 @@ public class OAuthBrowserDialog extends BrowserDialog implements
 	// for Google
 	private void closeIfTitleContainsFailure(String title) {
 		if (title.equals("Denied error=access_denied")) {
+			setReturnCode(CANCEL);
+			close();
+		}
+	}
+
+	// for Dropbox
+	private void closeIfURLContainsToken(String location) {
+		String prefix = "http://localhost:7777/dropbox-redirect?code=";
+		if (location.startsWith(prefix)) {
+			this.token = location.substring(prefix.length());
+			setReturnCode(OK);
+			close();
+		}
+	}
+
+	// for Dropbox
+	private void closeIfURLContainsFailure(String location) {
+		String prefix = "http://localhost:7777/dropbox-redirect?error_description=";
+		if (location.startsWith(prefix)) {
+			this.token = location.substring(prefix.length());
 			setReturnCode(CANCEL);
 			close();
 		}

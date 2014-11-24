@@ -62,6 +62,8 @@ public class GoogleTaskView extends ViewPart {
 				List<GoogleTaskList> lists = taskRepository.findAllTaskLists();
 				updateTree(lists);
 
+			} else {
+				// TODO clear tree
 			}
 		} catch (IOException e) {
 			// return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
