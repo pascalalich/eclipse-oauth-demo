@@ -1,5 +1,6 @@
 package de.alichs.eclipse.dropbox;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -9,7 +10,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "de.alichs.eclipse.tasks.trello"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "de.alichs.eclipse.dropbox"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -27,6 +28,14 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+	}
+
+	
+	@Override
+	protected void initializeImageRegistry(ImageRegistry registry) {
+		super.initializeImageRegistry(registry);
+		registry.put("dir", imageDescriptorFromPlugin(PLUGIN_ID, "icons/dir.gif"));
+		registry.put("file", imageDescriptorFromPlugin(PLUGIN_ID, "icons/file.gif"));
 	}
 
 	/*

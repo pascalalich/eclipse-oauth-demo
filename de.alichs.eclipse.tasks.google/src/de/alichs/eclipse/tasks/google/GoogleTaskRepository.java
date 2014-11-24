@@ -53,6 +53,7 @@ public class GoogleTaskRepository {
 			if (!title.trim().isEmpty()) {
 				GoogleTask task = new GoogleTask();
 				task.setTitle(title);
+				task.setDone(gTask.getCompleted() != null);
 				tasks.add(task);
 			}
 		}

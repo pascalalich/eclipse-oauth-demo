@@ -1,5 +1,6 @@
 package de.alichs.eclipse.tasks.google;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -29,6 +30,13 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 	}
 
+	@Override
+	protected void initializeImageRegistry(ImageRegistry registry) {
+		super.initializeImageRegistry(registry);
+		registry.put("todo", imageDescriptorFromPlugin(PLUGIN_ID, "icons/todo.gif"));
+		registry.put("done", imageDescriptorFromPlugin(PLUGIN_ID, "icons/done.gif"));
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
