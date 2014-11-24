@@ -2,6 +2,8 @@ package de.alichs.eclipse.tasks.google;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.viewers.TreeViewer;
@@ -24,6 +26,9 @@ public class GoogleTaskView extends ViewPart {
 
 	private static final URL CLIENT_SECRETS = Activator.getDefault()
 			.getBundle().getEntry("client_secret.json");
+
+	private static final Collection<String> TASKS_SCOPE = Arrays
+			.asList("https://www.googleapis.com/auth/tasks");
 
 	private TreeViewer treeViewer;
 
@@ -50,9 +55,6 @@ public class GoogleTaskView extends ViewPart {
 
 	public void refreshTree() {
 		// TODO Get threading right (Jobs?)
-		// Job job = new Job("Loading Google tasks...") {
-		// @Override
-		// protected IStatus run(IProgressMonitor monitor) {
 		Credential credential;
 		try {
 			credential = getCredentials();
@@ -66,19 +68,15 @@ public class GoogleTaskView extends ViewPart {
 				// TODO clear tree
 			}
 		} catch (IOException e) {
-			// return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-			// "Failed to load Google tasks", e);
 			ErrorDialogHelper.openErrorDialog("Google Tasks",
 					"Failed to load Google tasks", e);
 		}
+	}
 
-		// return Status.OK_STATUS;
-		// }
-		// };
-		// job.addJobChangeListener(new JobChangeAdapter() {
-		//
-		// });
-		// job.schedule();
+	private Credential getCredentials() throws IOException {
+		TokenHandler tokenHandler = TokenHandler.getInstance();
+		return tokenHandler.getCredentials(Activator.PLUGIN_ID, CLIENT_SECRETS,
+				TASKS_SCOPE);
 	}
 
 	private void updateTree(final List<GoogleTaskList> lists) {
@@ -96,8 +94,4 @@ public class GoogleTaskView extends ViewPart {
 		treeViewer.getTree().setFocus();
 	}
 
-	private Credential getCredentials() throws IOException {
-		TokenHandler tokenHandler = TokenHandler.getInstance();
-		return tokenHandler.getCredentials(CLIENT_SECRETS);
-	}
 }

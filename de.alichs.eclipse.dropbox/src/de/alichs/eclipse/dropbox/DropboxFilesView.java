@@ -1,6 +1,7 @@
 package de.alichs.eclipse.dropbox;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -19,6 +20,9 @@ import de.alichs.eclipse.oauth.TokenHandler;
 public class DropboxFilesView extends ViewPart {
 
 	public static final String PART_ID = "de.alichs.eclipse.dropbox";
+
+	private static final URL CLIENT_SECRETS = Activator.getDefault()
+			.getBundle().getEntry("client_secret.json");
 
 	private TreeViewer treeViewer;
 
@@ -44,9 +48,8 @@ public class DropboxFilesView extends ViewPart {
 	}
 
 	public void refreshTree() {
-		TokenHandler tokenHandler = TokenHandler.getInstance();
 		try {
-			Credential credential = tokenHandler.getCredentialsForDropbox();
+			Credential credential = getCredentials();
 			if (credential != null) {
 				DropboxFilesRepository repository = new DropboxFilesRepository(
 						credential);
@@ -61,6 +64,11 @@ public class DropboxFilesView extends ViewPart {
 					"Could not access Dropbox", e);
 		}
 
+	}
+
+	private Credential getCredentials() throws IOException {
+		TokenHandler tokenHandler = TokenHandler.getInstance();
+		return tokenHandler.getCredentials(Activator.PLUGIN_ID, CLIENT_SECRETS);
 	}
 
 	private void updateTree(final DropboxDirectory dir) {
