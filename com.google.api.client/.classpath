@@ -10,7 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-protobuf-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-servlet-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-api-client-xml-1.18.0-rc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/google-http-client-1.18.0-rc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/google-http-client-1.18.0-rc.jar" sourcepath="D:/Dropbox/Programming/tools/google-api-java-client-1.18.0-rc/libs-sources/google-http-client-1.18.0-rc-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-android-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-appengine-1.18.0-rc.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/google-http-client-gson-1.18.0-rc.jar"/>
