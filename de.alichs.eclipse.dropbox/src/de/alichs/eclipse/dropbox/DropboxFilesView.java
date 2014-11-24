@@ -43,7 +43,7 @@ public class DropboxFilesView extends ViewPart {
 		refreshTree();
 	}
 
-	private void refreshTree() {
+	public void refreshTree() {
 		TokenHandler tokenHandler = TokenHandler.getInstance();
 		try {
 			Credential credential = tokenHandler.getCredentialsForDropbox();

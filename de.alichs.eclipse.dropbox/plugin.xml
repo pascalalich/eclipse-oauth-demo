@@ -11,12 +11,25 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:de.alichs.eclipse.dropbox">
+         <command
+               commandId="de.alichs.eclipse.dropbox.refresh"
+               icon="icons/refresh.gif"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             id="de.alichs.eclipse.dropbox"
             name="Show Dropbox Files">
+      </command>
+      <command
+            id="de.alichs.eclipse.dropbox.refresh"
+            name="Refresh">
       </command>
    </extension>
    <extension
@@ -25,11 +38,16 @@
             class="de.alichs.eclipse.dropbox.ShowDropboxFilesHandler"
             commandId="de.alichs.eclipse.dropbox">
       </handler>
+      <handler
+            class="de.alichs.eclipse.dropbox.RefreshHandler"
+            commandId="de.alichs.eclipse.dropbox.refresh">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
             class="de.alichs.eclipse.dropbox.DropboxFilesView"
+            icon="icons/dropbox16.png"
             id="de.alichs.eclipse.dropbox"
             name="Dropbox Files"
             restorable="true">
