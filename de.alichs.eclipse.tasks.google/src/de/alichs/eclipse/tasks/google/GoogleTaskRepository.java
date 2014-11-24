@@ -49,9 +49,12 @@ public class GoogleTaskRepository {
 				.list(listId).execute();
 		List<GoogleTask> tasks = new LinkedList<>();
 		for (Task gTask : gTasks.getItems()) {
-			GoogleTask task = new GoogleTask();
-			task.setTitle(gTask.getTitle());
-			tasks.add(task);
+			String title = gTask.getTitle();
+			if (!title.trim().isEmpty()) {
+				GoogleTask task = new GoogleTask();
+				task.setTitle(title);
+				tasks.add(task);
+			}
 		}
 		return tasks;
 	}
