@@ -26,4 +26,13 @@
             commandId="de.alichs.eclipse.dropbox">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.alichs.eclipse.dropbox.DropboxFilesView"
+            id="de.alichs.eclipse.dropbox"
+            name="Dropbox Files"
+            restorable="true">
+      </view>
+   </extension>
 </plugin>

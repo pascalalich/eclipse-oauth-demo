@@ -27,10 +27,6 @@ public class GoogleTaskView extends ViewPart {
 
 	private TreeViewer treeViewer;
 
-	public GoogleTaskView() {
-		super();
-	}
-
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -53,6 +49,7 @@ public class GoogleTaskView extends ViewPart {
 	}
 
 	public void refreshTree() {
+		// TODO Get threading right (Jobs?)
 		// Job job = new Job("Loading Google tasks...") {
 		// @Override
 		// protected IStatus run(IProgressMonitor monitor) {
